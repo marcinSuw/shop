@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-4">
+    <h1>Products</h1>
+  </div>
+  <div class="col-md-6 ml-auto">
+    <div class="form-inline" style="margin-top: 10px">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" v-on:click.prevent="getProducts()">Search</button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Product name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="product in products">
+        <td>${product.name}</td>
+        <td>${product.price}</td>
+        <td>
+          <button class="btn btn-info" v-on:click="showProductSescription(product)">Show description</button>
+          <button class="btn btn-primary" v-on:click="addCartItem(product.id)">Add to cart</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,48 @@
+<div class="row">
+  <h1>Cart</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(item, index) in cartItems">
+        <th scope="row">${index+1}</th>
+        <td>${item.product_name}</td>
+        <td><input class="form-control" type="number" min="1" size="2" v-model="item.quantity" v-on:change="quantityChange(item)"></td>
+        <td>${item.price}</td>
+        <td>
+          <button class="btn btn-danger" v-on:click="deleteCartItem(item.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <div class="form-group row">
+      <label for="promoCode" class="col-md-5 col-form-label">Promo code</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" size="20" id="promoCode" placeholder="Promo code" v-model="cart.promo_code">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 ">
+    <button class="btn btn-success" v-on:click="applyPromoCode()">Apply</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4 offset-md-8">
+    <h5>TOTAL: ${cart.total}</h5>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4 offset-md-8">
+    <button class="btn btn-success" data-toggle="modal" data-target="#checkoutModal">Checkout</button>
+  </div>
+</div>

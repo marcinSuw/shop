@@ -1,0 +1,180 @@
+<!-- Show Order Modal -->
+<div class="modal fade" id="showOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">ORDERS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form v-on:submit.prevent="getOrders()">
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Email</th>
+                <th scope="col">Promotion Code</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="order in orders">
+                <td>${order.id}</td>
+                <td>${order.email}</td>
+                <td>${order.promotion_code}</td>
+                <td>${order.total}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="loading" v-if="loading===true">Loading&#8230;</div>
+</div>
+<!-- Promo Codes Modal -->
+<div class="modal fade" id="showPromoCodes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">PROMO CODES</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form v-on:submit.prevent="getOrders()">
+        <div class="modal-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Promo Code</th>
+                <th scope="col">Discount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="promo_code in promo_codes">
+                <td>${promo_code.code}</td>
+                <td>${promo_code.discount} %</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="loading" v-if="loading===true">Loading&#8230;</div>
+</div>
+<!-- Checkout Modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">CHECKOUT CART</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form v-on:submit.prevent="checkoutCart()">
+        <div class="modal-body">
+          <div class="row">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in cartItems">
+                  <th scope="row">${index+1}</th>
+                  <td>${item.product_name}</td>
+                  <td>${item.quantity}</td>
+                  <td>${item.price}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-md-4 offset-md-8">
+              <h5>TOTAL: ${cart.total}</h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8 offset-md-4">
+              <div class="form-group row">
+                <label for="email" class="col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="email" class="form-control" size="20" id="email" placeholder="Email" v-model="email">
+                  <p v-for="e in checkoutErrors">
+                    ${e}<br></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal" v-on:click="clearCheckoutModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Is active when cart have one or more item and email adres is present"
+            :disabled="checkoutIsDisabled()">Checkout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="loading" v-if="loading===true">Loading&#8230;</div>
+</div>
+<!-- DESCRIPTION Modal -->
+<div class="modal fade" id="productDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">PRODUCT: ${currentProduct.name}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ${currentProduct.description}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="loading" v-if="loading===true">Loading&#8230;</div>
+</div>
+<!-- readmy modal -->
+<div class="modal fade" id="readMeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">READMY</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Z uwagi na to, że jestem backend developerem i nie mam doświadczenia w tworzeniu UI,
+          w zleconym zadaniu skupiłem się głównie na przygotowaniu aplikacji serwera (REST API). Niemniej na potrzeby prezentacji działania API przygotowałem UI aplikacji.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="loading" v-if="loading===true">Loading&#8230;</div>
+</div>
