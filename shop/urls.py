@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 from base.views import PromoCodesView
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html')),
     path('', include('products.urls')),
     path('', include('orders.urls')),
